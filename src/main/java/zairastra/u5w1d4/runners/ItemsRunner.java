@@ -59,6 +59,12 @@ public class ItemsRunner implements CommandLineRunner {
 //        toppingsService.findToppingByName("tuna");
 //        toppingsService.findToppingByName("nduja");
 
+
+        //se avessi salvato toppings e pizze insieme non sarei dovuta andarmeli a prendere dal db
+        //perchè sarebbero esistiti nella fase managed insieme
+        //avendoli salvati separatamente devo prima cercare i topping nel db
+        //avrei potuto mettere la ricerca dei topping dentro il save della pizza, come nel blog
+
         List<String> toppingNames = List.of("tomato", "bufala", "onions", "basil", "tuna", "nduja");
         List<Topping> toppings = toppingsService.findToppingsByNames(toppingNames);
 
@@ -73,5 +79,7 @@ public class ItemsRunner implements CommandLineRunner {
 
 //        pizzasService.saveManyPizzas(newPizzas);
 
+        //testato per pizza esistente, logga correttamente exception
+//        pizzasService.savePizzaWithToppings("Margherita", List.of("tomato", "bufala"), false);
     }
 }

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zairastra.u5w1d4.entities.Pizza;
+import zairastra.u5w1d4.entities.Topping;
 import zairastra.u5w1d4.exceptions.DuplicatedException;
 import zairastra.u5w1d4.exceptions.NotFoundException;
 import zairastra.u5w1d4.exceptions.ValidationException;
@@ -18,7 +19,28 @@ public class PizzasService {
     @Autowired
     private PizzasRepository pizzaRepository;
 
+    @Autowired
+    private ToppingsService toppingsService;
+
     public Pizza savePizza(Pizza newPizza) {
+        List<Pizza> saved = pizzaRepository.findByNameIgnoreCase(newPizza.getName());
+
+        if (!saved.isEmpty()) {
+            throw new DuplicatedException("The pizza " + newPizza.getName() + " is already on the menu");
+        }
+
+        return pizzaRepository.save(newPizza);
+    }
+
+    //questo metodo mi permette di creare la pizza senza riprendere esternamente la lista di topping come facevo prima
+    //nel Runner
+    //controllo anche che la lunghezza sia quella corretta
+
+    public Pizza savePizzaWithToppings(String name, List<String> toppingNames, boolean isXl) {
+        List<Topping> toppings = toppingsService.findToppingsByNames(toppingNames);
+        if (toppings.size() != toppingNames.size()) throw new ValidationException("Topping not found");
+
+        Pizza newPizza = new Pizza(name, toppings, isXl);
         List<Pizza> saved = pizzaRepository.findByNameIgnoreCase(newPizza.getName());
 
         if (!saved.isEmpty()) {
