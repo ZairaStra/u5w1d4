@@ -10,4 +10,7 @@ public interface ToppingsRepository extends JpaRepository<Topping, Long> {
 
     //cerca per nome
     List<Topping> findByNameIgnoreCase(String name);
+
+    List<Topping> findByNameInIgnoreCase(List<String> names);
+
 }

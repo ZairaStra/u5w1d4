@@ -22,7 +22,7 @@ public class ToppingsService {
         List<Topping> saved = toppingsRepository.findByNameIgnoreCase(newTopping.getName());
 
         if (!saved.isEmpty()) {
-            throw new DuplicatedException("The drink " + newTopping.getName() + " is already on the menu");
+            throw new DuplicatedException("The topping " + newTopping.getName() + " is already on the menu");
         }
 
         return toppingsRepository.save(newTopping);
@@ -42,7 +42,7 @@ public class ToppingsService {
         List<Topping> toppings = toppingsRepository.findByNameIgnoreCase(name);
 
         if (toppings.isEmpty()) {
-            throw new NotFoundException("No drink named " + name + "found");
+            throw new NotFoundException("No topping named " + name + "found");
         }
 
         log.info("Found " + toppings.size() + name);
@@ -51,5 +51,12 @@ public class ToppingsService {
         return toppings;
     }
 
+    public List<Topping> findToppingsByNames(List<String> names) {
+        List<Topping> toppings = toppingsRepository.findByNameInIgnoreCase(names);
+        if (toppings.isEmpty()) {
+            throw new NotFoundException("No toppings found for names: " + names);
+        }
+        return toppings;
+    }
 
 }

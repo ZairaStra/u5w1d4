@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import zairastra.u5w1d4.entities.Drink;
+import zairastra.u5w1d4.entities.Pizza;
 import zairastra.u5w1d4.entities.Topping;
 import zairastra.u5w1d4.services.DrinksService;
 import zairastra.u5w1d4.services.ItemsService;
@@ -38,7 +39,7 @@ public class ItemsRunner implements CommandLineRunner {
         newDrinks.add(new Drink(170, 3.5, "beer"));
         newDrinks.add(new Drink(110, 4, "wine"));
 
-        drinksService.saveManyDrinks(newDrinks);
+//        drinksService.saveManyDrinks(newDrinks);
 
         List<Topping> newToppings = new ArrayList<>();
         newToppings.add(new Topping(30, 1, "tomato"));
@@ -49,9 +50,28 @@ public class ItemsRunner implements CommandLineRunner {
         newToppings.add(new Topping(80, 4, "nduja"));
 
 
-        toppingsService.saveManyToppings(newToppings);
+//        toppingsService.saveManyToppings(newToppings);
 
-//        List<Pizza> newPizza = new ArrayList<>();
-//        newPizza.add(new Pizza("Margherita", List.of("tomato", "bufala"), ))
+//        toppingsService.findToppingByName("tomato");
+//        toppingsService.findToppingByName("bufala");
+//        toppingsService.findToppingByName("onions");
+//        toppingsService.findToppingByName("basil");
+//        toppingsService.findToppingByName("tuna");
+//        toppingsService.findToppingByName("nduja");
+
+        List<String> toppingNames = List.of("tomato", "bufala", "onions", "basil", "tuna", "nduja");
+        List<Topping> toppings = toppingsService.findToppingsByNames(toppingNames);
+
+        List<Pizza> newPizzas = new ArrayList<>();
+        Pizza margherita = new Pizza("Margherita", toppings.subList(0, 2), false);
+        Pizza tropeana = new Pizza("Tropeana", toppings.subList(0, 5), false);
+        Pizza calabrese = new Pizza("Calabrese", toppings, true);
+
+        newPizzas.add(margherita);
+        newPizzas.add(tropeana);
+        newPizzas.add(calabrese);
+
+//        pizzasService.saveManyPizzas(newPizzas);
+
     }
 }
